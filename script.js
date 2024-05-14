@@ -16,7 +16,7 @@ function checkout() {
     for (var i = 0; i < cartItems.length; i++) {
         message += "\n" + cartItems[i].textContent;
     }
-    // Substitua 'api.whatsapp.com' por 'web.whatsapp.com' se preferir abrir no WhatsApp Web
+   // whatsapp
     var whatsappLink = "https://api.whatsapp.com/send?phone=" + phoneNumber + "&text=" + encodeURIComponent(message);
     window.open(whatsappLink, '_blank');
 }
