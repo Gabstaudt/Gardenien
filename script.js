@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var cartButton = document.getElementById("cartButton");
     var cart = document.getElementById("carrinho");
     var checkoutBtn = document.getElementById("checkoutBtn");
-    var cartItems = []; // Array para armazenar os itens do carrinho
+    var cartItems = []; // Array para armazenar os itens do carrinho (nomes e preços)
 
     // Adicionar evento de clique ao botão do carrinho
     cartButton.addEventListener("click", function() {
@@ -11,11 +11,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Adicionar evento de clique ao botão "Finalizar Compra"
     checkoutBtn.addEventListener("click", function() {
-        // Criar a mensagem com base nos itens do carrinho
+        // Calcular o preço total dos produtos no carrinho
+        var totalPrice = 0;
+        for (var i = 0; i < cartItems.length; i++) {
+            totalPrice += parseFloat(cartItems[i].price);
+        }
+
+        // Criar a mensagem com base nos itens do carrinho e no preço total
         var message = "Olá! Gostaria de finalizar a compra dos seguintes itens:\n";
         for (var i = 0; i < cartItems.length; i++) {
-            message += "- " + cartItems[i] + "\n";
+            message += "- " + cartItems[i].name + " - R$ " + cartItems[i].price + "\n";
         }
+        message += "\nPreço Total: R$ " + totalPrice.toFixed(2); // Formatar o preço total para 2 casas decimais
 
         // Codificar a mensagem para ser usada no link do WhatsApp
         var encodedMessage = encodeURIComponent(message);
@@ -29,7 +36,8 @@ document.addEventListener("DOMContentLoaded", function() {
     addToCartButtons.forEach(function(button) {
         button.addEventListener("click", function() {
             var productName = this.getAttribute("data-name");
-            cartItems.push(productName);
+            var productPrice = this.getAttribute("data-price");
+            cartItems.push({ name: productName, price: productPrice });
             renderCart(); // Atualizar o carrinho
         });
     });
@@ -41,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         cartItems.forEach(function(item) {
             var listItem = document.createElement("li");
-            listItem.textContent = item;
+            listItem.textContent = item.name + " - R$ " + item.price;
             cartList.appendChild(listItem);
         });
     }
